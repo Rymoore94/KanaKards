@@ -1,6 +1,8 @@
 package com.example.ryan.kanakards;
+import android.widget.Toast;
 import com.example.ryan.kanakards.Kana;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class CardMethods {
             new Kana("は", "ha", "Hiragana"),
             new Kana("ひ", "hi", "Hiragana"),
             new Kana("ふ", "fu", "Hiragana"),
-            new Kana("へ", "he", "Hiragana/Katakana"),
+            new Kana("へ", "he", "Both"),
             new Kana("ほ", "ho", "Hiragana"),
             new Kana("ま", "ma", "Hiragana"),
             new Kana("み", "mi", "Hiragana"),
@@ -149,27 +151,30 @@ public class CardMethods {
             new Kana("ポ", "po", "Katakana")
     };
     private Kana workingPool[] = masterPool;
-    private int currentCard = 0;
+    private int currentCard = -1; //We start at -1 since serveCard is called when the app launches, thus bring it to 0
 
     public Kana serveCard(){
-        if(workingPool[currentCard+1] != null){
-            currentCard++;
-            return workingPool[currentCard];
+        if(currentCard < workingPool.length-1) {
+            if (workingPool[currentCard + 1] != null)
+                currentCard++;
+            else if (checkEmpty())
+                reset();
+            else
+                currentCard = 0;
         }
-        else{
-            reset();
-            return workingPool[currentCard];
-        }
+        else
+            currentCard = 0;
+        return workingPool[currentCard];
     }
 
-    public void reset(){
+    private void reset(){
         currentCard = 0;
         workingPool = shuffle();
     }
 
-    public Kana[] shuffle(){
+    private Kana[] shuffle(){ //TODO FIX THIS SHIT AND MAKE SURE IT WORKS
         Kana tempPool[] = new Kana[masterPool.length];
-        List<Integer> nums = null;
+        List<Integer> nums = new ArrayList<>();
         for(int x = 0; x < masterPool.length; x++){
             nums.add(x);
         }
@@ -180,12 +185,34 @@ public class CardMethods {
         return tempPool;
     }
 
-    public void removeFromPool(int loc){
-        //remove kana Objecet
+    public void removeFromPool(){
+        for(int x = currentCard; x < workingPool.length; x++){
+            if(x != workingPool.length-1){
+                if(workingPool[x+1] != null)
+                    workingPool[x] = workingPool[x+1];
+                else
+                    workingPool[x] = null;
+            }
+            else
+                workingPool[x] = null;
+        }
+        currentCard--;
     }
 
-    public void popToBack(int loc){
-        //move current kana object to back
+    public void popToBack(){
+        Kana tempKana = workingPool[currentCard];
+        removeFromPool();
+        currentCard++;
+        System.arraycopy(workingPool, 0, workingPool, 1, workingPool.length - 1);
+        workingPool[0] = tempKana;
+    }
+
+    private boolean checkEmpty(){
+        for (Kana aWorkingPool : workingPool) {
+            if (aWorkingPool != null)
+                return false;
+        }
+        return true;
     }
 
 }

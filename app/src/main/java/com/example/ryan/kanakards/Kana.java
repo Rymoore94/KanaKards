@@ -15,4 +15,16 @@ public class Kana {
         roma = _roma;
         classification = _classification;
     }
+
+    public String getKana(){
+        return kana;
+    }
+
+    public String getRoma() {
+        return roma;
+    }
+
+    public String getClassification() {
+        return classification;
+    }
 }
