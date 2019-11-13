@@ -2,15 +2,12 @@ package com.example.ryan.kanakards;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +29,7 @@ public class NewCardMethods {
             fillDefault(contents);
         else
             fillNonTraditional();
-        workingPool = masterPool;
+        refillPool();
     }
 
     public Characters serveCard(){
@@ -41,7 +38,10 @@ public class NewCardMethods {
             return (workingPool.get(currentCard));
         }
         else if(checkEmpty()){
-            return new Characters("Finished.", "Nothing to see");
+            shufflePool();
+            currentCard = 0;
+            Toast.makeText(context, "Lesson Complete! Shuffling...", Toast.LENGTH_SHORT).show();
+            return (workingPool.get(currentCard));
             //TODO they completed the lesson
         }
         else{
@@ -58,11 +58,22 @@ public class NewCardMethods {
     public void moveCardToBack(){
         Characters temp = workingPool.get(currentCard);
         removeCard();
+        currentCard++;
         workingPool.add(0,temp);
+    }
+
+    private void refillPool(){
+        for(int x = 0; x < masterPool.size(); x++)
+            workingPool.add(masterPool.get(x));
     }
 
     private boolean checkEmpty(){
         return (workingPool.isEmpty());
+    }
+
+    private void shufflePool(){
+        refillPool();
+        Collections.shuffle(workingPool);
     }
 
     private void fillDefault(String _contents){
@@ -78,7 +89,9 @@ public class NewCardMethods {
     }
 
     private void fillNonTraditional(){
-        //TODO read in the filename/path listed in contents
+        fill(contents);
+        //TODO: possibly have the LOAD function save the character set in the assets folder
+        //TODO: then load from there
     }
 
     private void fill(String pathname){
@@ -102,6 +115,8 @@ public class NewCardMethods {
             }
             read.close();
         }
-        catch (IOException e){}
+        catch (IOException e){
+            Toast.makeText(context, "*internal screaming*", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -14,6 +14,7 @@ public class CardViewer extends AppCompatActivity {
     Button wrong;
     boolean isFront;
     Characters card;
+    NewCardMethods cardMethods;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,7 @@ public class CardViewer extends AppCompatActivity {
         correct = findViewById(R.id.correctButt);
         wrong = findViewById(R.id.wrongButt);
         Intent intent = getIntent();
-        final NewCardMethods cardMethods = new NewCardMethods(this);
+        cardMethods = new NewCardMethods(this);
         String characterSet = intent.getStringExtra("toLoad");
         cardMethods.fillPool(characterSet);
         card = cardMethods.serveCard();
