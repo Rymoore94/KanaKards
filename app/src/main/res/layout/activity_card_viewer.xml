@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".CardViewer">
+
+    <Button
+            android:id="@+id/flashCard"
+            android:layout_width="0dp"
+            android:layout_height="246dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="#61D3D3C3"
+            android:text="あ"
+            android:textSize="120sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.391" />
+
+    <Button
+            android:id="@+id/correctButt"
+            android:layout_width="141dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="113dp"
+            android:backgroundTint="#0AC421"
+            android:text="Correct"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:id="@+id/wrongButt"
+            android:layout_width="141dp"
+            android:layout_height="90dp"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="#D82E2E"
+            android:text="Incorrect"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/correctButt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/correctButt"
+            app:layout_constraintVertical_bias="0.0" />
+</android.support.constraint.ConstraintLayout>

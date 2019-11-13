@@ -1,45 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
     <Button
-            android:layout_width="370dp"
-            android:layout_height="0dp"
-            android:text="T"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/kanaBox" android:textAllCaps="false"
-            android:textSize="180sp" app:layout_constraintTop_toBottomOf="@+id/testButt"
-            android:layout_marginBottom="117dp"/>
-    <Button
-            android:text="Correct"
+            android:id="@+id/toExperimental"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rightButt"
-            android:background="@android:color/holo_green_dark" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="53dp" android:layout_marginBottom="32dp"/>
-    <Button
-            android:text="Incorrect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/wrongButt"
-            android:background="@android:color/holo_red_dark" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="59dp" android:layout_marginBottom="32dp"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    <Button
-            android:text="Skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/testButt" android:layout_marginTop="16dp"
-            android:layout_marginBottom="53dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/kanaBox" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="77dp"
+            android:text="Experimental"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+            android:id="@+id/toSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="17dp"
+            android:text="Settings"
+            app:layout_constraintBottom_toBottomOf="@+id/toExperimental"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toExperimental" />
+
+    <Button
+            android:id="@+id/toKata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="17dp"
+            android:text="Katakana"
+            app:layout_constraintBottom_toTopOf="@+id/toQuick"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:id="@+id/toHira"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="134dp"
+            android:text="Hiragana"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+            android:id="@+id/toQuick"
+            android:layout_width="254dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="30dp"
+            android:text="Quck Start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toHira" />
 </android.support.constraint.ConstraintLayout>

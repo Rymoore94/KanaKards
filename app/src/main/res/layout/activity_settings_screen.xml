@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SettingsScreen">
+
+    <TextView
+            android:id="@+id/settingQuickstart"
+            android:layout_width="189dp"
+            android:layout_height="82dp"
+            android:layout_marginBottom="26dp"
+            android:text="Quick Start"
+            app:layout_constraintBottom_toTopOf="@+id/checkHira"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+            android:id="@+id/checkHira"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="298dp"
+            android:layout_marginEnd="77dp"
+            android:text="Hiragana"
+            app:layout_constraintEnd_toEndOf="@+id/loadCharacters"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+            android:id="@+id/checkKata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="71dp"
+            android:layout_marginTop="26dp"
+            android:text="Katakana"
+            app:layout_constraintStart_toStartOf="@+id/loadCharacters"
+            app:layout_constraintTop_toBottomOf="@+id/settingQuickstart" />
+
+    <Button
+            android:id="@+id/loadCharacters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:text="Load"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkHira" />
+</android.support.constraint.ConstraintLayout>
