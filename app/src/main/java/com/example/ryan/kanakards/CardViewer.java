@@ -50,7 +50,9 @@ public class CardViewer extends AppCompatActivity {
             public void onClick(View view) {
                 cardMethods.removeCard();
                 card = cardMethods.serveCard();
+                flashCard.setTextSize(120);
                 flashCard.setText(card.getSymbol());
+                isFront = true;
             }
         });
 
@@ -58,7 +60,9 @@ public class CardViewer extends AppCompatActivity {
             public void onClick(View view) {
                 cardMethods.moveCardToBack();
                 card = cardMethods.serveCard();
+                flashCard.setTextSize(120);
                 flashCard.setText(card.getSymbol());
+                isFront = true;
             }
         });
     }
