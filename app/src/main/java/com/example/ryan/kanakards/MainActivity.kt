@@ -65,9 +65,9 @@ class MainActivity : AppCompatActivity() {
         }//TODO add case for custom file as quick start
     }
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
         if (requestCode == SETTING_REQUEST) {
             if (resultCode == SettingsScreen.RESULT_OK) {
+                Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
                 saver.save(SettingsPacket((data!!.getBooleanExtra("hiraCheck", true)),
                     data.getBooleanExtra("kataCheck", true),
                     data.getBooleanExtra("customCheck", false),
