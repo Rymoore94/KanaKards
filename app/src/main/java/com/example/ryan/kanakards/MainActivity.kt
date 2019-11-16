@@ -40,12 +40,14 @@ class MainActivity : AppCompatActivity() {
         toHira.setOnClickListener { //Goes to card viewer with only Hira
             var intent = Intent(this, CardViewer::class.java)
             intent.putExtra("toLoad", "hira")
+            intent.putExtra("isCustom", false)
             startActivity(intent)
         }
 
         toKata.setOnClickListener { //Goes to card viewer with only Kata
             var intent = Intent(this, CardViewer::class.java)
             intent.putExtra("toLoad", "kata")
+            intent.putExtra("isCustom", false)
             startActivity(intent)
         }
 
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("toLoad", "hira")
                 else if (quickSettings.kata == true)
                     intent.putExtra("toLoad", "kata")
+                intent.putExtra("isCustom", quickSettings.custom)
                 startActivity(intent)
             }
             else
@@ -67,7 +70,7 @@ class MainActivity : AppCompatActivity() {
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == SETTING_REQUEST) {
             if (resultCode == SettingsScreen.RESULT_OK) {
-                Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
                 saver.save(SettingsPacket((data!!.getBooleanExtra("hiraCheck", true)),
                     data.getBooleanExtra("kataCheck", true),
                     data.getBooleanExtra("customCheck", false),

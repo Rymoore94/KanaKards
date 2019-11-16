@@ -20,11 +20,6 @@ public class SettingsPacket {
         fileName = _fileName;
     }
 
-    SettingsPacket(boolean _hira, boolean _kata){
-        hira = _hira;
-        kata = _kata;
-    }
-
     public boolean getHira(){
         return hira;
     }
