@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         quickSettings = saver.load()
 
         toExperimental.setOnClickListener{  //Goes to experimental screen
-            var intent = Intent(this, ExperimentalFeatures::class.java)
+            val intent = Intent(this, ExperimentalFeatures::class.java)
             /*USE THIS IF YOU NEED TO PASS INFO INSIDE INTENT
             intent.putExtra("IDENTIFIER", VALUE)
              */
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         toSettings.setOnClickListener { //Goes to settings screen
-            var intent = Intent(this, SettingsScreen::class.java)
+            val intent = Intent(this, SettingsScreen::class.java)
             intent.putExtra("hiraCheck", quickSettings.hira)
             intent.putExtra("kataCheck", quickSettings.kata)
             intent.putExtra("customCheck", quickSettings.custom)
@@ -40,34 +40,39 @@ class MainActivity : AppCompatActivity() {
         }
 
         toHira.setOnClickListener { //Goes to card viewer with only Hira
-            var intent = Intent(this, CardViewer::class.java)
+            val intent = Intent(this, CardViewer::class.java)
             intent.putExtra("toLoad", "hira")
             intent.putExtra("isCustom", false)
             startActivity(intent)
         }
 
         toKata.setOnClickListener { //Goes to card viewer with only Kata
-            var intent = Intent(this, CardViewer::class.java)
+            val intent = Intent(this, CardViewer::class.java)
             intent.putExtra("toLoad", "kata")
             intent.putExtra("isCustom", false)
             startActivity(intent)
         }
 
         toQuick.setOnClickListener {    //Goes to card viewer with settings applied
-            var intent = Intent(this, CardViewer::class.java)
-            if((quickSettings.hira == true) || (quickSettings.kata == true)) {
-                if ((quickSettings.hira == true) && (quickSettings.kata == true))
+            val intent = Intent(this, CardViewer::class.java)
+            if((quickSettings.hira) || (quickSettings.kata)) {
+                if ((quickSettings.hira) && (quickSettings.kata))
                     intent.putExtra("toLoad", "both")
-                else if (quickSettings.hira == true)
+                else if (quickSettings.hira)
                     intent.putExtra("toLoad", "hira")
-                else if (quickSettings.kata == true)
+                else if (quickSettings.kata)
                     intent.putExtra("toLoad", "kata")
                 intent.putExtra("isCustom", quickSettings.custom)
                 startActivity(intent)
             }
+            else if(quickSettings.custom){
+                intent.putExtra("isCustom", quickSettings.custom)
+                intent.putExtra("toLoad", quickSettings.filename)
+                startActivity(intent)
+            }
             else
                 Toast.makeText(this, "No Quick Start has been set", Toast.LENGTH_SHORT).show()
-        }//TODO add case for custom file as quick start
+        }
     }
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == SETTING_REQUEST) {

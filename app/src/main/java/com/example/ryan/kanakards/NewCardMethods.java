@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class NewCardMethods {
+class NewCardMethods {
 
     private List<Characters> masterPool = new ArrayList<>();
     private List<Characters> workingPool = new ArrayList<>();
@@ -21,11 +21,11 @@ public class NewCardMethods {
     private String contents = "";
     private Context context;
 
-    public NewCardMethods(Context _context){
+    NewCardMethods(Context _context){
         context = _context;
     }
 
-    public void fillPool(String _contents){
+    void fillPool(String _contents){
         contents = _contents;
         if((Objects.equals(contents, "hira")) || (Objects.equals(contents, "kata")) || (Objects.equals(contents, "both")))
             fillDefault(contents);
@@ -34,7 +34,7 @@ public class NewCardMethods {
         refillPool();
     }
 
-    public Characters serveCard(){
+    Characters serveCard(){
         if(currentCard < workingPool.size()-1){
             currentCard++;
             return (workingPool.get(currentCard));
@@ -52,12 +52,12 @@ public class NewCardMethods {
         }
     }
 
-    public void removeCard(){
+    void removeCard(){
         workingPool.remove(currentCard);
         currentCard--;
     }
 
-    public void moveCardToBack(){
+    void moveCardToBack(){
         Characters temp = workingPool.get(currentCard);
         removeCard();
         currentCard++;
@@ -65,8 +65,7 @@ public class NewCardMethods {
     }
 
     private void refillPool(){
-        for(int x = 0; x < masterPool.size(); x++)
-            workingPool.add(masterPool.get(x));
+        workingPool.addAll(masterPool);
     }
 
     private boolean checkEmpty(){
@@ -86,14 +85,13 @@ public class NewCardMethods {
         else{
             fillDefault("hira");
             fillDefault("kata");
-            return;
         }
     }
 
     private void fillNonTraditional(){
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         String[] temp = saveData.getString(contents, null).split(" ");
-        for( int x = 0; x< temp.length; x+=2){
+        for( int x = 1; x < temp.length; x+=2){
             masterPool.add(new Characters(temp[x], temp[x+1]));
         }
     }
@@ -107,7 +105,7 @@ public class NewCardMethods {
             BufferedReader read = new BufferedReader(new InputStreamReader(file, "UTF8"));
             String data;
             while((data = read.readLine()) != null){
-                if(flipflop == true){
+                if(flipflop){
                     symbol = data;
                     flipflop = false;
                 }

@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class SettingsScreen extends AppCompatActivity {
     CheckBox hiraCheck;
     CheckBox kataCheck;
     CheckBox customCheck;
+    RadioGroup customGroup;
     Button saveButt;
     Button loadButt;
     boolean hiraSet;
@@ -54,7 +56,9 @@ public class SettingsScreen extends AppCompatActivity {
         Intent intent = getIntent();
         saver = new save(getApplicationContext());
         customView = findViewById(R.id.customView);
+        customGroup = new RadioGroup(this);
         linearLayout = findViewById(R.id.linearLayout);
+        linearLayout.addView(customGroup);
         hiraSet = intent.getBooleanExtra("hiraCheck", true);
         kataSet = intent.getBooleanExtra("kataCheck", true);
         customSet = intent.getBooleanExtra("customCheck", false);
@@ -70,7 +74,7 @@ public class SettingsScreen extends AppCompatActivity {
         kataCheck.setChecked(kataSet);
         customCheck.setChecked(customSet);
 
-        if(customSet == false)
+        if(!customSet)
             linearLayout.setVisibility(View.GONE);
         else
             linearLayout.setVisibility(View.VISIBLE);
@@ -78,9 +82,18 @@ public class SettingsScreen extends AppCompatActivity {
         String[] customButts = customNames.split(" ");
         if(!customNames.equals("")) {
             for (int x = 1; x < customButts.length; x++) { //set to 1 so that is skips the blank space
-                CheckBox temp = new CheckBox(this);
+                RadioButton temp = new RadioButton(this);
                 temp.setText(customButts[x]);
-                linearLayout.addView(temp);
+                temp.setId(x);
+                customGroup.addView(temp);
+            }
+            if(!fileName.equals("")){
+                RadioButton tempo;
+                for (int x = 1; x < customButts.length; x++){
+                    tempo = findViewById(x);
+                    if(tempo.getText().toString().equals(fileName))
+                        tempo.setChecked(true);
+                }
             }
         }
 
@@ -88,8 +101,10 @@ public class SettingsScreen extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 hiraSet = isChecked;
-                customSet = false;
-                customCheck.setChecked(false);
+                if(isChecked) {
+                    customSet = false;
+                    customCheck.setChecked(false);
+                }
                 linearLayout.setVisibility(View.GONE);
             }});
 
@@ -97,8 +112,10 @@ public class SettingsScreen extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 kataSet = isChecked;
-                customSet = false;
-                customCheck.setChecked(false);
+                if(isChecked) {
+                    customSet = false;
+                    customCheck.setChecked(false);
+                }
                 linearLayout.setVisibility(View.GONE);
             }});
 
@@ -107,7 +124,7 @@ public class SettingsScreen extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 customSet = isChecked;
 
-                if(customSet == true){
+                if(customSet){
                     hiraCheck.setChecked(false);
                     kataCheck.setChecked(false);
                     hiraCheck.setClickable(false);
@@ -127,6 +144,13 @@ public class SettingsScreen extends AppCompatActivity {
                 }
             }});
 
+        customGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton temporary = findViewById(i);
+                fileName = temporary.getText().toString();
+            }
+        });
         loadButt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -163,7 +187,6 @@ public class SettingsScreen extends AppCompatActivity {
             Uri uri = data.getData();
             loadIn(uri);
         }
-        else{}
     }
 
     public void loadIn(Uri uri){
@@ -185,7 +208,7 @@ public class SettingsScreen extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Successfully loaded", Toast.LENGTH_SHORT).show();
                 RadioButton temp = new RadioButton(this);
                 temp.setText(fileName);
-                linearLayout.addView(temp);
+                customGroup.addView(temp);
                 saveCustom(contents, fileName);
             }
             else

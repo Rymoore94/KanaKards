@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public class save {
 
-    Context context;
+    private Context context;
 
     public save(Context _context){
         context = _context;
@@ -25,7 +25,7 @@ public class save {
         saver.apply();
     }
 
-    public void saveCustom(Vector<String> contents, String fileName){
+    void saveCustom(Vector<String> contents, String fileName){
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor saver = saveData.edit();
         saver.putString(fileName, parseVector(contents));
@@ -52,24 +52,7 @@ public class save {
                 saveData.getString("customNames", "")));
     }
 
-    public Vector<String> loadCustom(String fileName){
-        String contentString;
-        SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
-        contentString = saveData.getString(fileName, "");
-
-        return parseString(contentString);
-    }
-
-    private Vector<String> parseString(String contentString){
-        Vector<String> contents = new Vector<>(0);
-        String[] contentArray = contentString.split(" ");
-        for(int x = 0; x < contentArray.length; x++)
-            contents.add(contentArray[x]);
-
-        return contents;
-    }
-
-    public boolean doesExist(String fileName){
+    boolean doesExist(String fileName){
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         return saveData.contains(fileName);
     }
