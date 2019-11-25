@@ -3,6 +3,7 @@ package com.example.ryan.kanakards;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,6 +53,7 @@ public class SettingsScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_settings_screen);
         Intent intent = getIntent();
         saver = new save(getApplicationContext());

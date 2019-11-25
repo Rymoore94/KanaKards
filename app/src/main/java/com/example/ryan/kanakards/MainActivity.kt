@@ -1,6 +1,7 @@
 package com.example.ryan.kanakards
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     var saver = save(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_main)
         saver = save(applicationContext)
         quickSettings = saver.load()
