@@ -10,55 +10,81 @@
             android:id="@+id/settingQuickstart"
             android:layout_width="184dp"
             android:layout_height="62dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginTop="64dp"
             android:text="Quick Start"
             android:textAlignment="center"
             android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/checkHira"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-            android:id="@+id/checkHira"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="298dp"
-            android:layout_marginEnd="77dp"
-            android:layout_marginBottom="272dp"
-            android:text="Hiragana"
-            app:layout_constraintBottom_toTopOf="@+id/saveButt"
-            app:layout_constraintEnd_toEndOf="@+id/loadCharacters"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
             android:id="@+id/checkKata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="71dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginStart="79dp"
+            android:layout_marginBottom="17dp"
             android:text="Katakana"
-            app:layout_constraintStart_toStartOf="@+id/loadCharacters"
+            app:layout_constraintBottom_toTopOf="@+id/checkCustom"
+            app:layout_constraintStart_toStartOf="@+id/checkCustom" />
+
+    <CheckBox
+            android:id="@+id/checkHira"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="90dp"
+            android:text="Hiragana"
+            app:layout_constraintEnd_toEndOf="@+id/checkCustom"
             app:layout_constraintTop_toBottomOf="@+id/settingQuickstart" />
 
     <Button
             android:id="@+id/loadCharacters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="29dp"
             android:text="Load"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkHira" />
+            app:layout_constraintTop_toBottomOf="@+id/checkCustom" />
 
     <Button
             android:id="@+id/saveButt"
             android:layout_width="158dp"
             android:layout_height="0dp"
-            android:layout_marginTop="148dp"
+            android:layout_marginBottom="53dp"
             android:text="save"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pathBox" />
+
+    <CheckBox
+            android:id="@+id/checkCustom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:text="Use Custom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkHira" />
+
+    <EditText
+            android:id="@+id/pathBox"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="308dp"
+            android:layout_marginBottom="277dp"
+            android:ems="10"
+            android:hint="file path"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/saveButt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
