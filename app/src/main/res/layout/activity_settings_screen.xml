@@ -60,8 +60,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pathBox" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
             android:id="@+id/checkCustom"
@@ -73,18 +72,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkHira" />
 
-    <EditText
-            android:id="@+id/pathBox"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="308dp"
-            android:layout_marginBottom="277dp"
-            android:ems="10"
-            android:hint="file path"
-            android:inputType="textPersonName"
+    <ScrollView
+            android:id="@+id/customView"
+            android:layout_width="409dp"
+            android:layout_height="324dp"
             app:layout_constraintBottom_toTopOf="@+id/saveButt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/loadCharacters">
+
+        <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

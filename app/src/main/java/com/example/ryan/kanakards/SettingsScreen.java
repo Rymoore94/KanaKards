@@ -2,8 +2,12 @@ package com.example.ryan.kanakards;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,50 +28,78 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Set;
+import java.util.Vector;
 
 public class SettingsScreen extends AppCompatActivity {
     public static final int RESULT_FOR_PICK = 1;
     public static final int REQUEST_READ_EXTERNAL_STORAGE = 2;
+    ScrollView customView;
+    LinearLayout linearLayout;
+    save saver;
     CheckBox hiraCheck;
     CheckBox kataCheck;
     CheckBox customCheck;
     Button saveButt;
     Button loadButt;
-    TextView pathBox;
     boolean hiraSet;
     boolean kataSet;
     boolean customSet;
     String fileName;
+    String customNames;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_screen);
         Intent intent = getIntent();
+        saver = new save(getApplicationContext());
+        customView = findViewById(R.id.customView);
+        linearLayout = findViewById(R.id.linearLayout);
         hiraSet = intent.getBooleanExtra("hiraCheck", true);
         kataSet = intent.getBooleanExtra("kataCheck", true);
         customSet = intent.getBooleanExtra("customCheck", false);
         fileName = intent.getStringExtra("fileName");
+        customNames = intent.getStringExtra("customNames");
         hiraCheck = findViewById(R.id.checkHira);
         kataCheck = findViewById(R.id.checkKata);
         customCheck = findViewById(R.id.checkCustom);
         saveButt = findViewById(R.id.saveButt);
         loadButt = findViewById(R.id.loadCharacters);
-        pathBox = findViewById(R.id.pathBox);
 
         hiraCheck.setChecked(hiraSet);
         kataCheck.setChecked(kataSet);
         customCheck.setChecked(customSet);
 
+        if(customSet == false)
+            linearLayout.setVisibility(View.GONE);
+        else
+            linearLayout.setVisibility(View.VISIBLE);
+
+        String[] customButts = customNames.split(" ");
+        if(!customNames.equals("")) {
+            for (int x = 1; x < customButts.length; x++) { //set to 1 so that is skips the blank space
+                CheckBox temp = new CheckBox(this);
+                temp.setText(customButts[x]);
+                linearLayout.addView(temp);
+            }
+        }
+
         hiraCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 hiraSet = isChecked;
+                customSet = false;
+                customCheck.setChecked(false);
+                linearLayout.setVisibility(View.GONE);
             }});
 
         kataCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 kataSet = isChecked;
+                customSet = false;
+                customCheck.setChecked(false);
+                linearLayout.setVisibility(View.GONE);
             }});
 
         customCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -81,12 +116,14 @@ public class SettingsScreen extends AppCompatActivity {
                     kataCheck.setAlpha(0.5f);
                     hiraSet = false;
                     kataSet = false;
+                    linearLayout.setVisibility(View.VISIBLE);
                 }
                 else{
                     hiraCheck.setClickable(true);
                     kataCheck.setClickable(true);
                     hiraCheck.setAlpha(1.0f);
                     kataCheck.setAlpha(1.0f);
+                    linearLayout.setVisibility(View.GONE);
                 }
             }});
 
@@ -114,6 +151,7 @@ public class SettingsScreen extends AppCompatActivity {
                 result.putExtra("kataCheck", kataSet);
                 result.putExtra("customCheck", customSet);
                 result.putExtra("fileName", fileName);
+                result.putExtra("customNames", customNames);
                 setResult(SettingsScreen.RESULT_OK, result);
                 finish();
             }
@@ -128,15 +166,62 @@ public class SettingsScreen extends AppCompatActivity {
         else{}
     }
 
-    public void loadIn(Uri uri){    //TODO have it store the data after checking to make sure its valid
+    public void loadIn(Uri uri){
         try{
             InputStream file = getContentResolver().openInputStream(uri);
             BufferedReader read = new BufferedReader(new InputStreamReader(file, "UTF8"));
             String data;
-            Toast.makeText(SettingsScreen.this, "Seems to have worked...", Toast.LENGTH_SHORT).show();
+            String fileName = getFileName(uri);
+            Vector<String> contents = new Vector<>(0);
+            FileValidity isValid = new FileValidity(contents, fileName);
+            if(saver.doesExist(fileName)){
+                Toast.makeText(getApplicationContext(), "File name already exists", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            while((data = read.readLine()) != null){
+                contents.add(data);
+            }
+            if(isValid.checkValid()) {
+                Toast.makeText(getApplicationContext(), "Successfully loaded", Toast.LENGTH_SHORT).show();
+                RadioButton temp = new RadioButton(this);
+                temp.setText(fileName);
+                linearLayout.addView(temp);
+                saveCustom(contents, fileName);
+            }
+            else
+                Toast.makeText(getApplicationContext(), "The file is invalid", Toast.LENGTH_SHORT).show();
+            read.close();
         }
         catch (IOException e){
-            Toast.makeText(SettingsScreen.this, "*internal screaming*", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "*internal screaming*", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String getFileName(Uri uri) {    //developer.android.com example code
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    public void saveCustom(Vector<String> contents, String fileName){
+        saver.saveCustom(contents, fileName);
+        SettingsPacket temp = saver.load();
+        customNames = temp.getCustomNames();
     }
 }

@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        saver = save(applicationContext)
         quickSettings = saver.load()
 
         toExperimental.setOnClickListener{  //Goes to experimental screen
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("kataCheck", quickSettings.kata)
             intent.putExtra("customCheck", quickSettings.custom)
             intent.putExtra("fileName", quickSettings.filename)
+            intent.putExtra("customNames", quickSettings.customNames)
             startActivityForResult(intent, SETTING_REQUEST)
         }
 
@@ -74,7 +76,8 @@ class MainActivity : AppCompatActivity() {
                 saver.save(SettingsPacket((data!!.getBooleanExtra("hiraCheck", true)),
                     data.getBooleanExtra("kataCheck", true),
                     data.getBooleanExtra("customCheck", false),
-                    data.getStringExtra("fileName")))
+                    data.getStringExtra("fileName"),
+                    data.getStringExtra("customNames")))
                 quickSettings = saver.load()
             }
         }

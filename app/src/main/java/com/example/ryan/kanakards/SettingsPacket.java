@@ -5,6 +5,7 @@ public class SettingsPacket {
     private boolean kata;
     private boolean custom;
     private String fileName;
+    private String customNames;
 
     SettingsPacket(){
         hira = true;
@@ -13,11 +14,12 @@ public class SettingsPacket {
         fileName = "";
     }
 
-    SettingsPacket(boolean _hira, boolean _kata, boolean _custom, String _fileName){
+    SettingsPacket(boolean _hira, boolean _kata, boolean _custom, String _fileName, String _customNames){
         hira = _hira;
         kata = _kata;
         custom = _custom;
         fileName = _fileName;
+        customNames = _customNames;
     }
 
     public boolean getHira(){
@@ -34,5 +36,9 @@ public class SettingsPacket {
 
     public String getFilename(){
         return fileName;
+    }
+
+    public  String getCustomNames(){
+        return customNames;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.ryan.kanakards;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,9 +91,11 @@ public class NewCardMethods {
     }
 
     private void fillNonTraditional(){
-        fill(contents);
-        //TODO: possibly have the LOAD function save the character set in the assets folder
-        //TODO: then load from there
+        SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
+        String[] temp = saveData.getString(contents, null).split(" ");
+        for( int x = 0; x< temp.length; x+=2){
+            masterPool.add(new Characters(temp[x], temp[x+1]));
+        }
     }
 
     private void fill(String pathname){

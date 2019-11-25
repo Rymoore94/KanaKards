@@ -32,7 +32,7 @@ public class CardViewer extends AppCompatActivity {
         wrong = findViewById(R.id.wrongButt);
         sound = findViewById(R.id.soundButt);
         Intent intent = getIntent();
-        cardMethods = new NewCardMethods(this);
+        cardMethods = new NewCardMethods(getApplicationContext());
         pronounce = new SpeechCorrection();
         String characterSet = intent.getStringExtra("toLoad");
         isCustom = intent.getBooleanExtra("isCustom", false);
