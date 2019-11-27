@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
 
         toExperimental.setOnClickListener{  //Goes to experimental screen
             val intent = Intent(this, ExperimentalFeatures::class.java)
-            /*USE THIS IF YOU NEED TO PASS INFO INSIDE INTENT
-            intent.putExtra("IDENTIFIER", VALUE)
-             */
             startActivity(intent)
         }
 
@@ -74,6 +71,27 @@ class MainActivity : AppCompatActivity() {
             }
             else
                 Toast.makeText(this, "No Quick Start has been set", Toast.LENGTH_SHORT).show()
+        }
+
+        toBrowser.setOnClickListener {
+            val intent = Intent(this, CharacterBrowser::class.java)
+            if((quickSettings.hira) || (quickSettings.kata)) {
+                if ((quickSettings.hira) && (quickSettings.kata))
+                    intent.putExtra("toLoad", "both")
+                else if (quickSettings.hira)
+                    intent.putExtra("toLoad", "hira")
+                else if (quickSettings.kata)
+                    intent.putExtra("toLoad", "kata")
+                intent.putExtra("isCustom", quickSettings.custom)
+                startActivity(intent)
+            }
+            else if(quickSettings.custom){
+                intent.putExtra("isCustom", quickSettings.custom)
+                intent.putExtra("toLoad", quickSettings.filename)
+                startActivity(intent)
+            }
+            else
+                Toast.makeText(this, "No Character Set has been set to browse", Toast.LENGTH_SHORT).show()
         }
     }
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

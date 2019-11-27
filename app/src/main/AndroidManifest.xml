@@ -2,17 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.example.ryan.kanakards">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:screenOrientation="portrait"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".SettingsScreen"></activity>
+        <activity android:name=".InspectCharacter"></activity>
+        <activity android:name=".CharacterBrowser" />
+        <activity android:name=".SettingsScreen" />
         <activity android:name=".ExperimentalFeatures" />
         <activity android:name=".CardViewer" />
         <activity android:name=".MainActivity">

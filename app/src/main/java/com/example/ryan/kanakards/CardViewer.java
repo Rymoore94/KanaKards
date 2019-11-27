@@ -43,14 +43,13 @@ public class CardViewer extends AppCompatActivity {
         flashCard.setText(card.getSymbol());
         flashCard.setTextSize(120);
 
-        if(isCustom == true)
+        if(isCustom)
             sound.setVisibility(View.GONE);
 
         speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
                 speech.setLanguage(Locale.JAPANESE);
-                Toast.makeText(CardViewer.this, "success", Toast.LENGTH_SHORT).show();
             }
         });
 

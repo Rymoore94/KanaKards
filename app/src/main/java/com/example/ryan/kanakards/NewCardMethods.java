@@ -34,6 +34,10 @@ class NewCardMethods {
         refillPool();
     }
 
+    List<Characters> getPool(){
+        return masterPool;
+    }
+
     Characters serveCard(){
         if(currentCard < workingPool.size()-1){
             currentCard++;
