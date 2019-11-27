@@ -23,16 +23,13 @@ class MainActivity : AppCompatActivity() {
         saver = save(applicationContext)
         quickSettings = saver.load()
 
-        toExperimental.setOnClickListener{  //Goes to experimental screen
-            val intent = Intent(this, ExperimentalFeatures::class.java)
-            startActivity(intent)
-        }
-
         toSettings.setOnClickListener { //Goes to settings screen
             val intent = Intent(this, SettingsScreen::class.java)
             intent.putExtra("hiraCheck", quickSettings.hira)
             intent.putExtra("kataCheck", quickSettings.kata)
             intent.putExtra("customCheck", quickSettings.custom)
+            intent.putExtra("traceCheck", quickSettings.trace)
+            intent.putExtra("voiceCheck", quickSettings.voice)
             intent.putExtra("fileName", quickSettings.filename)
             intent.putExtra("customNames", quickSettings.customNames)
             startActivityForResult(intent, SETTING_REQUEST)
@@ -53,16 +50,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         toQuick.setOnClickListener {    //Goes to card viewer with settings applied
-            val intent = Intent(this, CardViewer::class.java)
+            val intent:Intent
+            if(quickSettings.trace)
+                intent = Intent(this, TraceViewer::class.java)
+            else if(quickSettings.voice)
+                intent = Intent(this, VoiceViewer::class.java)
+            else
+                intent = Intent(this, CardViewer::class.java)
             if((quickSettings.hira) || (quickSettings.kata)) {
-                if ((quickSettings.hira) && (quickSettings.kata))
-                    intent.putExtra("toLoad", "both")
-                else if (quickSettings.hira)
-                    intent.putExtra("toLoad", "hira")
-                else if (quickSettings.kata)
-                    intent.putExtra("toLoad", "kata")
-                intent.putExtra("isCustom", quickSettings.custom)
-                startActivity(intent)
+                    if ((quickSettings.hira) && (quickSettings.kata))
+                        intent.putExtra("toLoad", "both")
+                    else if (quickSettings.hira)
+                        intent.putExtra("toLoad", "hira")
+                    else if (quickSettings.kata)
+                        intent.putExtra("toLoad", "kata")
+                    intent.putExtra("isCustom", quickSettings.custom)
+                    startActivity(intent)
             }
             else if(quickSettings.custom){
                 intent.putExtra("isCustom", quickSettings.custom)
@@ -101,6 +104,8 @@ class MainActivity : AppCompatActivity() {
                 saver.save(SettingsPacket((data!!.getBooleanExtra("hiraCheck", true)),
                     data.getBooleanExtra("kataCheck", true),
                     data.getBooleanExtra("customCheck", false),
+                    data.getBooleanExtra("traceCheck", false),
+                    data.getBooleanExtra("voiceCheck", false),
                     data.getStringExtra("fileName"),
                     data.getStringExtra("customNames")))
                 quickSettings = saver.load()

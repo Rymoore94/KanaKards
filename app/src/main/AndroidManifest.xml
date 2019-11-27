@@ -12,10 +12,11 @@
             android:screenOrientation="portrait"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".InspectCharacter"></activity>
+        <activity android:name=".TraceViewer"></activity>
+        <activity android:name=".VoiceViewer" />
+        <activity android:name=".InspectCharacter" />
         <activity android:name=".CharacterBrowser" />
         <activity android:name=".SettingsScreen" />
-        <activity android:name=".ExperimentalFeatures" />
         <activity android:name=".CardViewer" />
         <activity android:name=".MainActivity">
             <intent-filter>

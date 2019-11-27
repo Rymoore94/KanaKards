@@ -2,12 +2,10 @@ package com.example.ryan.kanakards;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,16 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Set;
 import java.util.Vector;
 
 public class SettingsScreen extends AppCompatActivity {
@@ -42,12 +35,16 @@ public class SettingsScreen extends AppCompatActivity {
     CheckBox hiraCheck;
     CheckBox kataCheck;
     CheckBox customCheck;
+    CheckBox traceCheck;
+    CheckBox voiceCheck;
     RadioGroup customGroup;
     Button saveButt;
     Button loadButt;
     boolean hiraSet;
     boolean kataSet;
     boolean customSet;
+    boolean traceSet;
+    boolean voiceSet;
     String fileName;
     String customNames;
     @Override
@@ -64,22 +61,50 @@ public class SettingsScreen extends AppCompatActivity {
         hiraSet = intent.getBooleanExtra("hiraCheck", true);
         kataSet = intent.getBooleanExtra("kataCheck", true);
         customSet = intent.getBooleanExtra("customCheck", false);
+        traceSet = intent.getBooleanExtra("traceCheck", false);
+        voiceSet = intent.getBooleanExtra("voiceCheck", false);
         fileName = intent.getStringExtra("fileName");
         customNames = intent.getStringExtra("customNames");
         hiraCheck = findViewById(R.id.checkHira);
         kataCheck = findViewById(R.id.checkKata);
         customCheck = findViewById(R.id.checkCustom);
+        traceCheck = findViewById(R.id.checkTrace);
+        voiceCheck = findViewById(R.id.checkVoice);
         saveButt = findViewById(R.id.saveButt);
         loadButt = findViewById(R.id.loadCharacters);
 
         hiraCheck.setChecked(hiraSet);
         kataCheck.setChecked(kataSet);
         customCheck.setChecked(customSet);
+        traceCheck.setChecked(traceSet);
+        voiceCheck.setChecked(voiceSet);
 
-        if(!customSet)
-            linearLayout.setVisibility(View.GONE);
-        else
+        if(customSet) {
+            hiraCheck.setClickable(false);
+            kataCheck.setClickable(false);
+            traceCheck.setClickable(false);
+            voiceCheck.setClickable(false);
+            hiraCheck.setAlpha(0.5f);
+            kataCheck.setAlpha(0.5f);
+            traceCheck.setAlpha(0.5f);
+            voiceCheck.setAlpha(0.5f);
             linearLayout.setVisibility(View.VISIBLE);
+        }
+        else
+            linearLayout.setVisibility(View.GONE);
+
+        if(traceSet || voiceSet){
+            if(traceSet){
+                voiceCheck.setClickable(false);
+                voiceCheck.setAlpha(0.5f);
+            }
+            else{
+                traceCheck.setClickable(false);
+                traceCheck.setAlpha(0.5f);
+            }
+            customCheck.setClickable(false);
+            customCheck.setAlpha(0.5f);
+        }
 
         String[] customButts = customNames.split(" ");
         if(!customNames.equals("")) {
@@ -121,6 +146,52 @@ public class SettingsScreen extends AppCompatActivity {
                 linearLayout.setVisibility(View.GONE);
             }});
 
+        traceCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                traceSet = isChecked;
+                if(isChecked){
+                    customSet = false;
+                    voiceSet = false;
+                    customCheck.setChecked(false);
+                    voiceCheck.setChecked(false);
+                    customCheck.setClickable(false);
+                    voiceCheck.setClickable(false);
+                    customCheck.setAlpha(0.5f);
+                    voiceCheck.setAlpha(0.5f);
+                }
+                else{
+                    customCheck.setClickable(true);
+                    voiceCheck.setClickable(true);
+                    customCheck.setAlpha(1.0f);
+                    voiceCheck.setAlpha(1.0f);
+                }
+                linearLayout.setVisibility(View.GONE);
+            }});
+
+        voiceCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                voiceSet = isChecked;
+                if(isChecked){
+                    customSet = false;
+                    traceSet = false;
+                    customCheck.setChecked(false);
+                    traceCheck.setChecked(false);
+                    customCheck.setClickable(false);
+                    traceCheck.setClickable(false);
+                    customCheck.setAlpha(0.5f);
+                    traceCheck.setAlpha(0.5f);
+                }
+                else{
+                    customCheck.setClickable(true);
+                    traceCheck.setClickable(true);
+                    customCheck.setAlpha(1.0f);
+                    traceCheck.setAlpha(1.0f);
+                }
+                linearLayout.setVisibility(View.GONE);
+            }});
+
         customCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,19 +200,31 @@ public class SettingsScreen extends AppCompatActivity {
                 if(customSet){
                     hiraCheck.setChecked(false);
                     kataCheck.setChecked(false);
+                    traceCheck.setChecked(false);
+                    voiceCheck.setChecked(false);
                     hiraCheck.setClickable(false);
                     kataCheck.setClickable(false);
+                    traceCheck.setClickable(false);
+                    voiceCheck.setClickable(false);
                     hiraCheck.setAlpha(0.5f);
                     kataCheck.setAlpha(0.5f);
+                    traceCheck.setAlpha(0.5f);
+                    voiceCheck.setAlpha(0.5f);
                     hiraSet = false;
                     kataSet = false;
+                    traceSet = false;
+                    voiceSet = false;
                     linearLayout.setVisibility(View.VISIBLE);
                 }
                 else{
                     hiraCheck.setClickable(true);
                     kataCheck.setClickable(true);
+                    traceCheck.setClickable(true);
+                    voiceCheck.setClickable(true);
                     hiraCheck.setAlpha(1.0f);
                     kataCheck.setAlpha(1.0f);
+                    traceCheck.setAlpha(1.0f);
+                    voiceCheck.setAlpha(1.0f);
                     linearLayout.setVisibility(View.GONE);
                 }
             }});
@@ -176,6 +259,8 @@ public class SettingsScreen extends AppCompatActivity {
                 result.putExtra("hiraCheck", hiraSet);
                 result.putExtra("kataCheck", kataSet);
                 result.putExtra("customCheck", customSet);
+                result.putExtra("traceCheck", traceSet);
+                result.putExtra("voiceCheck", voiceSet);
                 result.putExtra("fileName", fileName);
                 result.putExtra("customNames", customNames);
                 setResult(SettingsScreen.RESULT_OK, result);
