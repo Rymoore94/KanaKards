@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "226898845525",
+    "firebase_url": "https://kanakards-kk.firebaseio.com",
+    "project_id": "kanakards-kk",
+    "storage_bucket": "kanakards-kk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226898845525:android:7082bda9b6f953083399dc",
+        "android_client_info": {
+          "package_name": "com.example.ryan.kanakards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226898845525-bq2drehg4e5g6kotsmfptlvuh9h06evg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDzmrPsgpxbPwMpO6XnUGJ_XbFx_jGAtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226898845525-bq2drehg4e5g6kotsmfptlvuh9h06evg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
