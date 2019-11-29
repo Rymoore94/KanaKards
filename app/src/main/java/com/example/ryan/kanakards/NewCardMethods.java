@@ -29,6 +29,8 @@ class NewCardMethods {
         contents = _contents;
         if((Objects.equals(contents, "hira")) || (Objects.equals(contents, "kata")) || (Objects.equals(contents, "both")))
             fillDefault(contents);
+        else if((Objects.equals(contents, "hiraw")) || (Objects.equals(contents, "kataw")) || (Objects.equals(contents, "bothw")))
+            fillWords(contents);
         else
             fillNonTraditional();
         refillPool();
@@ -79,6 +81,18 @@ class NewCardMethods {
     private void shufflePool(){
         refillPool();
         Collections.shuffle(workingPool);
+    }
+
+    private void fillWords(String _contents){
+        if(_contents.equals("hiraw"))
+            fill("hiraganawords.kk");
+        else if(_contents.equals("kataw"))
+            Toast.makeText(context, "This hasn't been implemented yet", Toast.LENGTH_SHORT).show();
+            //fill("katakanawords.kk");
+        else{
+            fillWords("hiraw");
+            fillWords("kataw");
+        }
     }
 
     private void fillDefault(String _contents){

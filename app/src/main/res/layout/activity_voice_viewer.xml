@@ -6,28 +6,40 @@
         android:layout_height="match_parent"
         tools:context=".VoiceViewer">
 
+    <Button
+            android:id="@+id/flashCard"
+            android:layout_width="0dp"
+            android:layout_height="246dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="#61D3D3C3"
+            android:text="あ"
+            android:textSize="120sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.334" />
+
     <ImageView
             android:id="@+id/speakButt"
-            android:layout_width="62dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="91dp"
+            android:layout_width="78dp"
+            android:layout_height="69dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/outputText"
+            app:layout_constraintTop_toBottomOf="@+id/flashCard"
             app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
-    <TextView
-            android:id="@+id/outputText"
+    <Button
+            android:id="@+id/skipButt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="270dp"
-            android:layout_marginBottom="286dp"
-            android:text="TextView"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/speakButt"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="16dp"
+            android:text="skip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
