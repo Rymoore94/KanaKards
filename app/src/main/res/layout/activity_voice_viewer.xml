@@ -6,4 +6,28 @@
         android:layout_height="match_parent"
         tools:context=".VoiceViewer">
 
+    <ImageView
+            android:id="@+id/speakButt"
+            android:layout_width="62dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="91dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outputText"
+            app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
+    <TextView
+            android:id="@+id/outputText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="270dp"
+            android:layout_marginBottom="286dp"
+            android:text="TextView"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/speakButt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
