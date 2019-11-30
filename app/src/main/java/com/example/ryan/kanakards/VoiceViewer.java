@@ -44,7 +44,7 @@ public class VoiceViewer extends AppCompatActivity {
         cards = new NewCardMethods((getApplicationContext()));
         cards.fillPool(toLoad);
         current = cards.serveCard();
-        check = new VoiceCheck();
+        check = new VoiceCheck(getApplicationContext(), toLoad);
         flashCard.setText(current.getSymbol());
         flashCard.setTextSize(120);
 
@@ -89,11 +89,11 @@ public class VoiceViewer extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int request, int result, Intent data){
+    protected void onActivityResult(int request, int result, Intent data){                              //TODO hopefully make the voice to text box look cleaner..?
         super.onActivityResult(request, result, data);
         if(request == VOICE_REQUEST_CODE && data != null){
             ArrayList<String> output = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if(check.isRight(current.getSymbol(), output.get(0))){
+            if(check.isRight(current.getSymbol(), output.get(0))){                                      //TODO make apparent that it was correct
                 cards.removeCard();
                 current = cards.serveCard();
                 flashCard.setTextSize(120);
@@ -101,7 +101,7 @@ public class VoiceViewer extends AppCompatActivity {
                 isFront = true;
                 Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
             }
-            else{
+            else{                                                                                       //TODO make apparent that it was incorrect
                 Toast.makeText(getApplicationContext(), "Incorrect", Toast.LENGTH_SHORT).show();
                 Log.d("words", current.getSymbol()+" "+output.get(0));  //prints the missed pronunciation in Log
             }
