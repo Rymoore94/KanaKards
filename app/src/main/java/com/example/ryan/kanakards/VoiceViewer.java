@@ -89,7 +89,7 @@ public class VoiceViewer extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int request, int result, Intent data){                              //TODO hopefully make the voice to text box look cleaner..?
+    protected void onActivityResult(int request, int result, Intent data){
         super.onActivityResult(request, result, data);
         if(request == VOICE_REQUEST_CODE && data != null){
             ArrayList<String> output = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);

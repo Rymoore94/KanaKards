@@ -87,8 +87,7 @@ class NewCardMethods {
         if(_contents.equals("hiraw"))
             fill("hiraganawords.kk");
         else if(_contents.equals("kataw"))
-            Toast.makeText(context, "This hasn't been implemented yet", Toast.LENGTH_SHORT).show();
-            //fill("katakanawords.kk");
+            fill("katakanawords.kk");
         else{
             fillWords("hiraw");
             fillWords("kataw");
