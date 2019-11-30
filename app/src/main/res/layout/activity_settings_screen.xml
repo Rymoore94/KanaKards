@@ -110,4 +110,14 @@
             app:layout_constraintBottom_toTopOf="@+id/customView"
             app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageButton
+            android:id="@+id/resetButt"
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_delete" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

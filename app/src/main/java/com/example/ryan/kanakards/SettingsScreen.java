@@ -1,12 +1,15 @@
 package com.example.ryan.kanakards;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,6 +44,7 @@ public class SettingsScreen extends AppCompatActivity {
     RadioGroup customGroup;
     Button saveButt;
     Button loadButt;
+    ImageView resetButt;
     boolean hiraSet;
     boolean kataSet;
     boolean customSet;
@@ -47,6 +52,7 @@ public class SettingsScreen extends AppCompatActivity {
     boolean voiceSet;
     String fileName;
     String customNames;
+    DialogInterface.OnClickListener alertListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +78,7 @@ public class SettingsScreen extends AppCompatActivity {
         voiceCheck = findViewById(R.id.checkVoice);
         saveButt = findViewById(R.id.saveButt);
         loadButt = findViewById(R.id.loadCharacters);
+        resetButt = findViewById(R.id.resetButt);
 
         hiraCheck.setChecked(hiraSet);
         kataCheck.setChecked(kataSet);
@@ -267,6 +274,35 @@ public class SettingsScreen extends AppCompatActivity {
                 finish();
             }
         });
+
+        resetButt.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                AlertDialog.Builder build = new AlertDialog.Builder(SettingsScreen.this);
+                build.setMessage("Are you sure you want to reset all save data?")
+                        .setPositiveButton("Yes", alertListener)
+                        .setNegativeButton("No", alertListener).show();
+            }
+        });
+
+        alertListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == dialogInterface.BUTTON_POSITIVE){
+                    saver.reset();
+                    Intent result = new Intent();
+                    result.putExtra("hiraCheck", true);
+                    result.putExtra("kataCheck", true);
+                    result.putExtra("customCheck", false);
+                    result.putExtra("traceCheck", false);
+                    result.putExtra("voiceCheck", false);
+                    result.putExtra("fileName", "");
+                    result.putExtra("customNames", "");
+                    setResult(SettingsScreen.RESULT_OK, result);
+                    finish();
+                }
+            }
+        };
     }
 
     public void onActivityResult(int request, int result, Intent data){

@@ -56,6 +56,13 @@ public class save {
                 saveData.getString("customNames", "")));
     }
 
+    public void reset(){
+        SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor saver = saveData.edit();
+        saver.clear();
+        saver.apply();
+    }
+
     boolean doesExist(String fileName){
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         return saveData.contains(fileName);
