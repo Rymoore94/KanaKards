@@ -16,14 +16,12 @@ public class InspectCharacter extends AppCompatActivity {
     boolean isCustom;
     TextView symbolView, romaView;
     Button listenButt;
-    SpeechCorrection pronounce;
     TextToSpeech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_inspect_character);
-        pronounce = new SpeechCorrection();
 
         speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -49,7 +47,10 @@ public class InspectCharacter extends AppCompatActivity {
 
         listenButt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                speech.speak(pronounce.correction(symbol), TextToSpeech.QUEUE_FLUSH, null, null);
+                if(symbol.equals("ん") || symbol.equals("ン"))
+                    speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
+                else
+                    speech.speak(symbol+"ー", TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
     }

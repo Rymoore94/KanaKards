@@ -19,7 +19,6 @@ public class CardViewer extends AppCompatActivity {
     boolean isCustom;
     Characters card;
     NewCardMethods cardMethods;
-    SpeechCorrection pronounce;
     TextToSpeech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class CardViewer extends AppCompatActivity {
         sound = findViewById(R.id.soundButt);
         Intent intent = getIntent();
         cardMethods = new NewCardMethods(getApplicationContext());
-        pronounce = new SpeechCorrection();
         String characterSet = intent.getStringExtra("toLoad");
         isCustom = intent.getBooleanExtra("isCustom", false);
         cardMethods.fillPool(characterSet);
@@ -53,7 +51,10 @@ public class CardViewer extends AppCompatActivity {
 
         sound.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                speech.speak(pronounce.correction(card.getSymbol()), TextToSpeech.QUEUE_FLUSH, null, null);
+                if(card.getSymbol().equals("ん") || card.getSymbol().equals("ン"))
+                    speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
+                else
+                    speech.speak(card.getSymbol()+"ー", TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
 
