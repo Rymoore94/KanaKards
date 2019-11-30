@@ -15,16 +15,16 @@ public class DrawView extends View {
     static Path path;
     private Paint drawPaint, canvasPaint;
     static int paintColor = Color.BLACK;
-    private  float STROKE_WIDTH = 30f;
+    private  float STROKE_WIDTH = 50f;
     private Canvas drawCanvas;
-    private Bitmap canvasBitmap;
+    private Bitmap bitmap;
 
     public DrawView(Context context, AttributeSet attrs){
         super(context, attrs);
-        setupDrawing();
+        setup();
     }
 
-    private void setupDrawing(){
+    private void setup(){
         path = new Path();
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
@@ -39,13 +39,14 @@ public class DrawView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        drawCanvas = new Canvas(canvasBitmap);
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        drawCanvas = new Canvas(bitmap);
+        drawCanvas.drawColor(Color.WHITE);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+        canvas.drawBitmap(bitmap, 0, 0, canvasPaint);
         canvas.drawPath(path, drawPaint);
     }
 
@@ -78,5 +79,9 @@ public class DrawView extends View {
 
     public void clearCanvas(){
         drawCanvas.drawColor(Color.WHITE);
+    }
+
+    public Bitmap getBitmap(){
+        return  bitmap;
     }
 }

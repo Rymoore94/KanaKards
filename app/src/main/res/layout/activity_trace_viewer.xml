@@ -7,6 +7,18 @@
         android:layout_height="match_parent"
         tools:context=".TraceViewer">
 
+    <Button
+            android:id="@+id/nextButt"
+            android:layout_width="70dp"
+            android:layout_height="57dp"
+            android:text="next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.988"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.672" />
+
     <com.example.ryan.kanakards.DrawView
             android:id="@+id/drawView"
             android:layout_width="400dp"
@@ -30,7 +42,47 @@
             android:text="Clear"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/drawView" />
+            app:layout_constraintTop_toBottomOf="@+id/kanaView" />
+
+    <TextView
+            android:id="@+id/kanaView"
+            android:layout_width="401dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="210dp"
+            android:alpha="0.3"
+            android:fontFamily="sans-serif"
+            android:text="あ"
+            android:textAlignment="center"
+            android:textSize="386sp"
+            app:layout_constraintBottom_toTopOf="@+id/clearButt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+            android:id="@+id/hideButt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="42dp"
+            android:layout_marginBottom="45dp"
+            android:text="hide"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+            android:id="@+id/submitButt"
+            android:layout_width="70dp"
+            android:layout_height="57dp"
+            android:text="grade"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.017"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.672" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
