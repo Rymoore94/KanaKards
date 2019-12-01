@@ -10,7 +10,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,9 +32,6 @@ public class TraceViewer extends AppCompatActivity {
     private Characters card;
     private String toLoad;
     private Boolean isHidden = false;
-    private CompareBitmaps compareBit; //TODO remove if don't work
-    private double similar; //TODO remove if dont work
-    private String msg; //TODO remove if dont work
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class TraceViewer extends AppCompatActivity {
         cardMethods.fillPool(toLoad);
         card = cardMethods.serveCard();
         kanaView.setText(card.getSymbol());
-        compareBit = new CompareBitmaps();
 
         drawView.setDrawingCacheEnabled(true);
         drawView.setVisibility(View.VISIBLE);
@@ -61,8 +59,6 @@ public class TraceViewer extends AppCompatActivity {
         drawView.invalidate();
 
         kanaView.setDrawingCacheEnabled(true);
-
-        submitButt.setVisibility(View.GONE);    //TODO remove if I get working
 
         clearButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,20 +86,11 @@ public class TraceViewer extends AppCompatActivity {
         submitButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add checker of some kind
                 kanaView.buildDrawingCache();
-                //TODO remove below if don't work
-                similar = compareBit.calSimilarity(kanaView.getDrawingCache(), drawView.getBitmap());
-                if(similar >= .90)
-                    msg = "Very good!";
-                else if (similar >= .88)
-                    msg = "Pretty good!";
-                else if (similar >= .86)
-                    msg = "Practice this more";
-                else
-                    msg = "Hmm.. try again...";
-                Toast.makeText(getApplicationContext(), msg + " " + similar, Toast.LENGTH_SHORT).show();
-                //TODO remove above if don't work
+
+                double similarity = gradeKana(kanaView.getDrawingCache(), drawView.getBitmap());
+
+                Toast.makeText(getApplicationContext(), ""+similarity, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -116,9 +103,53 @@ public class TraceViewer extends AppCompatActivity {
                 kanaView.setVisibility(View.VISIBLE);
                 isHidden = false;
                 hideButt.setText("hide");
+                kanaView.buildDrawingCache();
             }
         });
 
     }
 
+    private double gradeKana(Bitmap b1, Bitmap b2){     //b1 is Original, b2 is drawing
+        b1 = makeMonochrome(b1);
+        b1 = compress(b1);
+        b2 = compress(b2);
+        return compareBitmaps(b1, b2);
+    }
+
+    private Bitmap makeMonochrome(Bitmap bitmap){
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(bitmap, 0, 0, null);
+        return newBitmap;
+    }
+
+    private Bitmap compress(Bitmap bitmap){
+        return ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4);
+    }
+
+    private double compareBitmaps(Bitmap bitmap1, Bitmap bitmap2){
+        int pixel1, pixel2, r1, r2, g1, g2, b1, b2;
+        int match = 0;
+        int width = bitmap2.getWidth();
+        int height = bitmap2.getHeight();
+
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                pixel2 = bitmap2.getPixel(x, y);
+                r2 = Color.red(pixel2);
+                g2 = Color.green(pixel2);
+                b2 = Color.blue(pixel2);
+                pixel1 = bitmap1.getPixel(x, y);
+                r1 = Color.red(pixel1);
+                g1 = Color.green(pixel1);
+                b1 = Color.blue(pixel1);
+                if(r2 == r1 && g2 == g1 && b2 == b1)
+                    match++;
+            }
+        }
+        double matchD = match;
+        double volume = width*height;
+        return matchD/volume;
+    }
 }
