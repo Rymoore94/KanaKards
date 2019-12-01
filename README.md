@@ -53,3 +53,5 @@ An app made to aide in the learning and memorization of the two phonetic Japanes
   - Tap a character of your choice to be brought into an inspection screen where you can view the pronunciation. You can even have it pronounced out loud with the Listen button so long as it's from the default character set.
 - ### Push notifications
   - Just so you don't forget to keep up on your studies, if the app hasn't been opened in a day or so, a push notification reminder will be sent to the device.
+- ### Reset save data
+  - Tap the little red X in the bottom-right corner of the Settings screen to reset all save data.
