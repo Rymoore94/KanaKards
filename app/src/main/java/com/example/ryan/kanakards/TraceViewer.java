@@ -26,12 +26,13 @@ import java.util.ArrayList;
 public class TraceViewer extends AppCompatActivity {
 
     private DrawView drawView;
-    private Button clearButt, hideButt, submitButt, nextButt;
+    private Button clearButt, hideButt, submitButt;
     private TextView kanaView;
     private NewCardMethods cardMethods;
     private Characters card;
     private String toLoad;
     private Boolean isHidden = false;
+    private double tolerance = 0.93;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class TraceViewer extends AppCompatActivity {
         hideButt = findViewById(R.id.hideButt);
         submitButt = findViewById(R.id.submitButt);
         kanaView = findViewById(R.id.kanaView);
-        nextButt = findViewById(R.id.nextButt);
         cardMethods = new NewCardMethods(getApplicationContext());
         cardMethods.fillPool(toLoad);
         card = cardMethods.serveCard();
@@ -90,23 +90,22 @@ public class TraceViewer extends AppCompatActivity {
 
                 double similarity = gradeKana(kanaView.getDrawingCache(), drawView.getBitmap());
 
-                Toast.makeText(getApplicationContext(), ""+similarity, Toast.LENGTH_SHORT).show();
+                if(similarity >= tolerance){
+                    drawView.clearCanvas();
+                    card = cardMethods.serveCard();
+                    kanaView.setText(card.getSymbol());
+                    kanaView.setVisibility(View.VISIBLE);
+                    isHidden = false;
+                    hideButt.setText("hide");
+                    kanaView.buildDrawingCache();
+                    Toast.makeText(getApplicationContext(), "Looks good! "+similarity, Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Hmm.. try that again "+similarity, Toast.LENGTH_SHORT).show();
+                    drawView.clearCanvas();
+                }
             }
         });
-
-        nextButt.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                drawView.clearCanvas();
-                card = cardMethods.serveCard();
-                kanaView.setText(card.getSymbol());
-                kanaView.setVisibility(View.VISIBLE);
-                isHidden = false;
-                hideButt.setText("hide");
-                kanaView.buildDrawingCache();
-            }
-        });
-
     }
 
     private double gradeKana(Bitmap b1, Bitmap b2){     //b1 is Original, b2 is drawing
