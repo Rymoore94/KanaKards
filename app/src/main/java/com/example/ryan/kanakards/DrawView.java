@@ -9,27 +9,26 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class DrawView extends View {
 
-    static Path path;
+    private static Path path;
+    private static int paintColor = Color.BLACK;
     private Paint drawPaint, canvasPaint;
-    static int paintColor = Color.BLACK;
-    private  float STROKE_WIDTH = 50f;
     private Canvas drawCanvas;
     private Bitmap bitmap;
 
-    public DrawView(Context context, AttributeSet attrs){
+    public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setup();
     }
 
-    private void setup(){
+    private void setup() {
         path = new Path();
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
+        float STROKE_WIDTH = 50f;
         drawPaint.setStrokeWidth(STROKE_WIDTH);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -78,11 +77,11 @@ public class DrawView extends View {
         return true;
     }
 
-    public void clearCanvas(){
+    public void clearCanvas() {
         drawCanvas.drawColor(Color.WHITE);
     }
 
-    public Bitmap getBitmap(){
-        return  bitmap;
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

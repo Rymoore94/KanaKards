@@ -12,7 +12,7 @@
             android:screenOrientation="portrait"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".TraceViewer"></activity>
+        <activity android:name=".TraceViewer" />
         <activity android:name=".VoiceViewer" />
         <activity android:name=".InspectCharacter" />
         <activity android:name=".CharacterBrowser" />

@@ -6,15 +6,15 @@ import android.preference.PreferenceManager;
 
 import java.util.Vector;
 
-public class save {
+public class Save {
 
     private Context context;
 
-    public save(Context _context){
+    public Save(Context _context) {
         context = _context;
     }
 
-    public void save(SettingsPacket data){
+    public void save(SettingsPacket data) {
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor saver = saveData.edit();
         saver.putBoolean("hira", data.getHira());
@@ -27,7 +27,7 @@ public class save {
         saver.apply();
     }
 
-    void saveCustom(Vector<String> contents, String fileName){
+    void saveCustom(Vector<String> contents, String fileName) {
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor saver = saveData.edit();
         saver.putString(fileName, parseVector(contents));
@@ -36,18 +36,18 @@ public class save {
         saver.apply();
     }
 
-    private String parseVector(Vector<String> contents){
-        String contentString = "";
-        for(int x = 0; x < contents.size(); x++)
-            contentString += " " + contents.get(x);
-        return contentString;
+    private String parseVector(Vector<String> contents) {
+        StringBuilder contentString = new StringBuilder();
+        for (int x = 0; x < contents.size(); x++)
+            contentString.append(" ").append(contents.get(x));
+        return contentString.toString();
     }
 
-    public SettingsPacket load(){
+    public SettingsPacket load() {
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
-        if(!saveData.contains("hira"))
+        if (!saveData.contains("hira"))
             save(new SettingsPacket(true, true, false, false, false, "", ""));
-        return(new SettingsPacket(saveData.getBoolean("hira", true),
+        return (new SettingsPacket(saveData.getBoolean("hira", true),
                 saveData.getBoolean("kata", true),
                 saveData.getBoolean("custom", false),
                 saveData.getBoolean("trace", false),
@@ -56,14 +56,14 @@ public class save {
                 saveData.getString("customNames", "")));
     }
 
-    public void reset(){
+    void reset() {
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor saver = saveData.edit();
         saver.clear();
         saver.apply();
     }
 
-    boolean doesExist(String fileName){
+    boolean doesExist(String fileName) {
         SharedPreferences saveData = PreferenceManager.getDefaultSharedPreferences(context);
         return saveData.contains(fileName);
     }

@@ -1,58 +1,54 @@
 package com.example.ryan.kanakards;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TraceViewer extends AppCompatActivity {
 
     private DrawView drawView;
-    private Button clearButt, hideButt, submitButt;
+    private Button hideButt;
+    private Button minButt;
+    private Button addButt;
     private TextView kanaView;
+    private TextView accuView;
     private NewCardMethods cardMethods;
     private Characters card;
-    private String toLoad;
     private Boolean isHidden = false;
-    private double tolerance = 0.93;
+    private double tolerance = 0.9400000000000001;  //Gotta be specific or else the doubles truncate weirdly for the percentage display
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_trace_viewer);
 
         Intent intent = getIntent();
-        toLoad = intent.getStringExtra("toLoad");
+        String toLoad = intent.getStringExtra("toLoad");
 
         drawView = findViewById(R.id.drawView);
-        clearButt = findViewById(R.id.clearButt);
+        accuView = findViewById(R.id.accuView);
+        Button clearButt = findViewById(R.id.clearButt);
         hideButt = findViewById(R.id.hideButt);
-        submitButt = findViewById(R.id.submitButt);
+        minButt = findViewById(R.id.minButt);
+        addButt = findViewById(R.id.addButt);
+        Button submitButt = findViewById(R.id.submitButt);
         kanaView = findViewById(R.id.kanaView);
         cardMethods = new NewCardMethods(getApplicationContext());
         cardMethods.fillPool(toLoad);
         card = cardMethods.serveCard();
         kanaView.setText(card.getSymbol());
-
+        accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
         drawView.setDrawingCacheEnabled(true);
         drawView.setVisibility(View.VISIBLE);
         drawView.setEnabled(true);
@@ -67,15 +63,49 @@ public class TraceViewer extends AppCompatActivity {
             }
         });
 
+        addButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tolerance < 0.99)
+                    tolerance += 0.01;
+                if (tolerance > 0.98) {
+                    addButt.setClickable(false);
+                    addButt.setAlpha(0.3f);
+                }
+                if (tolerance > 0.88) {
+                    minButt.setClickable(true);
+                    minButt.setAlpha(1.0f);
+                }
+                accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
+                Toast.makeText(getApplicationContext(), "" + tolerance, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        minButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tolerance > 0.88)
+                    tolerance -= 0.01;
+                if (tolerance < 0.89) {
+                    minButt.setClickable(false);
+                    minButt.setAlpha(0.3f);
+                }
+                if (tolerance < 0.99) {
+                    addButt.setClickable(true);
+                    addButt.setAlpha(1.0f);
+                }
+                accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
+            }
+        });
+
         hideButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isHidden){
+                if (isHidden) {
                     kanaView.setVisibility(View.VISIBLE);
                     hideButt.setText("hide");
                     isHidden = false;
-                }
-                else{
+                } else {
                     kanaView.setVisibility(View.INVISIBLE);
                     hideButt.setText("show");
                     isHidden = true;
@@ -89,8 +119,9 @@ public class TraceViewer extends AppCompatActivity {
                 kanaView.buildDrawingCache();
 
                 double similarity = gradeKana(kanaView.getDrawingCache(), drawView.getBitmap());
+                String percentage = "" + (int) (similarity * 100) + "%";
 
-                if(similarity >= tolerance){
+                if (similarity >= tolerance) {
                     drawView.clearCanvas();
                     card = cardMethods.serveCard();
                     kanaView.setText(card.getSymbol());
@@ -98,24 +129,23 @@ public class TraceViewer extends AppCompatActivity {
                     isHidden = false;
                     hideButt.setText("hide");
                     kanaView.buildDrawingCache();
-                    Toast.makeText(getApplicationContext(), "Looks good! "+similarity, Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Hmm.. try that again "+similarity, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Looks good! " + percentage, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Hmm.. try that again " + percentage, Toast.LENGTH_SHORT).show();
                     drawView.clearCanvas();
                 }
             }
         });
     }
 
-    private double gradeKana(Bitmap b1, Bitmap b2){     //b1 is Original, b2 is drawing
+    private double gradeKana(Bitmap b1, Bitmap b2) {     //b1 is Original, b2 is drawing
         b1 = makeMonochrome(b1);
         b1 = compress(b1);
         b2 = compress(b2);
         return compareBitmaps(b1, b2);
     }
 
-    private Bitmap makeMonochrome(Bitmap bitmap){
+    private Bitmap makeMonochrome(Bitmap bitmap) {
         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawColor(Color.WHITE);
@@ -123,18 +153,18 @@ public class TraceViewer extends AppCompatActivity {
         return newBitmap;
     }
 
-    private Bitmap compress(Bitmap bitmap){
-        return ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4);
+    private Bitmap compress(Bitmap bitmap) {
+        return ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4);
     }
 
-    private double compareBitmaps(Bitmap bitmap1, Bitmap bitmap2){
+    private double compareBitmaps(Bitmap bitmap1, Bitmap bitmap2) {
         int pixel1, pixel2, r1, r2, g1, g2, b1, b2;
         int match = 0;
         int width = bitmap2.getWidth();
         int height = bitmap2.getHeight();
 
-        for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 pixel2 = bitmap2.getPixel(x, y);
                 r2 = Color.red(pixel2);
                 g2 = Color.green(pixel2);
@@ -143,12 +173,12 @@ public class TraceViewer extends AppCompatActivity {
                 r1 = Color.red(pixel1);
                 g1 = Color.green(pixel1);
                 b1 = Color.blue(pixel1);
-                if(r2 == r1 && g2 == g1 && b2 == b1)
+                if (r2 == r1 && g2 == g1 && b2 == b1)
                     match++;
             }
         }
         double matchD = match;
-        double volume = width*height;
-        return matchD/volume;
+        double volume = width * height;
+        return matchD / volume;
     }
 }

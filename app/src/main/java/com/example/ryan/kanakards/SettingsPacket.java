@@ -9,14 +9,14 @@ public class SettingsPacket {
     private String fileName;
     private String customNames;
 
-    SettingsPacket(){
+    SettingsPacket() {
         hira = true;
         kata = true;
         custom = false;
         fileName = "";
     }
 
-    SettingsPacket(boolean _hira, boolean _kata, boolean _custom, boolean _trace, boolean _voice, String _fileName, String _customNames){
+    SettingsPacket(boolean _hira, boolean _kata, boolean _custom, boolean _trace, boolean _voice, String _fileName, String _customNames) {
         hira = _hira;
         kata = _kata;
         custom = _custom;
@@ -26,15 +26,15 @@ public class SettingsPacket {
         customNames = _customNames;
     }
 
-    public boolean getHira(){
+    public boolean getHira() {
         return hira;
     }
 
-    public boolean getKata(){
+    public boolean getKata() {
         return kata;
     }
 
-    public boolean getCustom(){
+    public boolean getCustom() {
         return custom;
     }
 
@@ -42,15 +42,15 @@ public class SettingsPacket {
         return trace;
     }
 
-    public boolean getVoice(){
+    public boolean getVoice() {
         return voice;
     }
 
-    public String getFilename(){
+    public String getFilename() {
         return fileName;
     }
 
-    public  String getCustomNames(){
+    public String getCustomNames() {
         return customNames;
     }
 }
