@@ -77,7 +77,6 @@ public class TraceViewer extends AppCompatActivity {
                     minButt.setAlpha(1.0f);
                 }
                 accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
-                Toast.makeText(getApplicationContext(), "" + tolerance, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -154,7 +153,9 @@ public class TraceViewer extends AppCompatActivity {
     }
 
     private Bitmap compress(Bitmap bitmap) {
-        return ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4);
+        return ThumbnailUtils.extractThumbnail(bitmap,
+                bitmap.getWidth() / 4,
+                bitmap.getHeight() / 4);
     }
 
     private double compareBitmaps(Bitmap bitmap1, Bitmap bitmap2) {

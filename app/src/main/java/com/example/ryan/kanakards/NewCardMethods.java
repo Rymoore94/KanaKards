@@ -51,7 +51,6 @@ class NewCardMethods {
             currentCard = 0;
             Toast.makeText(context, "Lesson Complete! Shuffling...", Toast.LENGTH_SHORT).show();
             return (workingPool.get(currentCard));
-            //TODO they completed the lesson
         } else {
             currentCard = 0;
             return (workingPool.get(currentCard));
