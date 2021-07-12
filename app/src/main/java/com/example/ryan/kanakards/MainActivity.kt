@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SETTING_REQUEST) {
             if (resultCode == SettingsScreen.RESULT_OK) {
                 Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()

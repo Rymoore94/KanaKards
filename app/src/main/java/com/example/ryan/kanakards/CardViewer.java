@@ -40,54 +40,41 @@ public class CardViewer extends AppCompatActivity {
         if (isCustom)
             sound.setVisibility(View.GONE);
 
-        speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                speech.setLanguage(Locale.JAPANESE);
-            }
+        speech = new TextToSpeech(getApplicationContext(), i -> speech.setLanguage(Locale.JAPANESE));
+
+        sound.setOnClickListener(view -> {
+            if (card.getSymbol().equals("ん") || card.getSymbol().equals("ン"))
+                speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
+            else
+                speech.speak(card.getSymbol() + "ー", TextToSpeech.QUEUE_FLUSH, null, null);
         });
 
-        sound.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (card.getSymbol().equals("ん") || card.getSymbol().equals("ン"))
-                    speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
-                else
-                    speech.speak(card.getSymbol() + "ー", TextToSpeech.QUEUE_FLUSH, null, null);
-            }
-        });
-
-        flashCard.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (isFront) {
-                    flashCard.setText(card.getRoma());
-                    flashCard.setTextSize(60);
-                    isFront = false;
-                } else {
-                    flashCard.setText(card.getSymbol());
-                    flashCard.setTextSize(120);
-                    isFront = true;
-                }
-            }
-        });
-
-        correct.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                cardMethods.removeCard();
-                card = cardMethods.serveCard();
-                flashCard.setTextSize(120);
+        flashCard.setOnClickListener(view -> {
+            if (isFront) {
+                flashCard.setText(card.getRoma());
+                flashCard.setTextSize(60);
+                isFront = false;
+            } else {
                 flashCard.setText(card.getSymbol());
+                flashCard.setTextSize(120);
                 isFront = true;
             }
         });
 
-        wrong.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                cardMethods.moveCardToBack();
-                card = cardMethods.serveCard();
-                flashCard.setTextSize(120);
-                flashCard.setText(card.getSymbol());
-                isFront = true;
-            }
+        correct.setOnClickListener(view -> {
+            cardMethods.removeCard();
+            card = cardMethods.serveCard();
+            flashCard.setTextSize(120);
+            flashCard.setText(card.getSymbol());
+            isFront = true;
+        });
+
+        wrong.setOnClickListener(view -> {
+            cardMethods.moveCardToBack();
+            card = cardMethods.serveCard();
+            flashCard.setTextSize(120);
+            flashCard.setText(card.getSymbol());
+            isFront = true;
         });
     }
 }

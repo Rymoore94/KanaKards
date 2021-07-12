@@ -33,16 +33,14 @@ public class CharacterBrowser extends AppCompatActivity {
 
         TableLayout tableLayout = findViewById(R.id.tableLayout);
 
-        View.OnClickListener massListener = new View.OnClickListener() {
-            public void onClick(View v) {
-                Characters chosen = pool.get(v.getId());
-                Intent inspectIntent = new Intent(getApplicationContext(), InspectCharacter.class);
-                inspectIntent.putExtra("isCustom", isCustom);
-                inspectIntent.putExtra("symbol", chosen.getSymbol());
-                inspectIntent.putExtra("roma", chosen.getRoma());
+        View.OnClickListener massListener = v -> {
+            Characters chosen = pool.get(v.getId());
+            Intent inspectIntent = new Intent(getApplicationContext(), InspectCharacter.class);
+            inspectIntent.putExtra("isCustom", isCustom);
+            inspectIntent.putExtra("symbol", chosen.getSymbol());
+            inspectIntent.putExtra("roma", chosen.getRoma());
 
-                startActivity(inspectIntent);
-            }
+            startActivity(inspectIntent);
         };
 
         int size = pool.size();

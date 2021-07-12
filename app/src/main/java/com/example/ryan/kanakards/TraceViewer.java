@@ -56,83 +56,66 @@ public class TraceViewer extends AppCompatActivity {
 
         kanaView.setDrawingCacheEnabled(true);
 
-        clearButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        clearButt.setOnClickListener(view -> drawView.clearCanvas());
+
+        addButt.setOnClickListener(view -> {
+            if (tolerance < 0.99)
+                tolerance += 0.01;
+            if (tolerance > 0.98) {
+                addButt.setClickable(false);
+                addButt.setAlpha(0.3f);
+            }
+            if (tolerance > 0.88) {
+                minButt.setClickable(true);
+                minButt.setAlpha(1.0f);
+            }
+            accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
+        });
+
+        minButt.setOnClickListener(view -> {
+            if (tolerance > 0.88)
+                tolerance -= 0.01;
+            if (tolerance < 0.89) {
+                minButt.setClickable(false);
+                minButt.setAlpha(0.3f);
+            }
+            if (tolerance < 0.99) {
+                addButt.setClickable(true);
+                addButt.setAlpha(1.0f);
+            }
+            accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
+        });
+
+        hideButt.setOnClickListener(view -> {
+            if (isHidden) {
+                kanaView.setVisibility(View.VISIBLE);
+                hideButt.setText("hide");
+                isHidden = false;
+            } else {
+                kanaView.setVisibility(View.INVISIBLE);
+                hideButt.setText("show");
+                isHidden = true;
+            }
+        });
+
+        submitButt.setOnClickListener(view -> {
+            kanaView.buildDrawingCache();
+
+            double similarity = gradeKana(kanaView.getDrawingCache(), drawView.getBitmap());
+            String percentage = "" + (int) (similarity * 100) + "%";
+
+            if (similarity >= tolerance) {
                 drawView.clearCanvas();
-            }
-        });
-
-        addButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tolerance < 0.99)
-                    tolerance += 0.01;
-                if (tolerance > 0.98) {
-                    addButt.setClickable(false);
-                    addButt.setAlpha(0.3f);
-                }
-                if (tolerance > 0.88) {
-                    minButt.setClickable(true);
-                    minButt.setAlpha(1.0f);
-                }
-                accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
-            }
-        });
-
-        minButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tolerance > 0.88)
-                    tolerance -= 0.01;
-                if (tolerance < 0.89) {
-                    minButt.setClickable(false);
-                    minButt.setAlpha(0.3f);
-                }
-                if (tolerance < 0.99) {
-                    addButt.setClickable(true);
-                    addButt.setAlpha(1.0f);
-                }
-                accuView.setText("Expected Accuracy\n" + (int) (tolerance * 100) + "%");
-            }
-        });
-
-        hideButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isHidden) {
-                    kanaView.setVisibility(View.VISIBLE);
-                    hideButt.setText("hide");
-                    isHidden = false;
-                } else {
-                    kanaView.setVisibility(View.INVISIBLE);
-                    hideButt.setText("show");
-                    isHidden = true;
-                }
-            }
-        });
-
-        submitButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                card = cardMethods.serveCard();
+                kanaView.setText(card.getSymbol());
+                kanaView.setVisibility(View.VISIBLE);
+                isHidden = false;
+                hideButt.setText("hide");
                 kanaView.buildDrawingCache();
-
-                double similarity = gradeKana(kanaView.getDrawingCache(), drawView.getBitmap());
-                String percentage = "" + (int) (similarity * 100) + "%";
-
-                if (similarity >= tolerance) {
-                    drawView.clearCanvas();
-                    card = cardMethods.serveCard();
-                    kanaView.setText(card.getSymbol());
-                    kanaView.setVisibility(View.VISIBLE);
-                    isHidden = false;
-                    hideButt.setText("hide");
-                    kanaView.buildDrawingCache();
-                    Toast.makeText(getApplicationContext(), "Looks good! " + percentage, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Hmm.. try that again " + percentage, Toast.LENGTH_SHORT).show();
-                    drawView.clearCanvas();
-                }
+                Toast.makeText(getApplicationContext(), "Looks good! " + percentage, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Hmm.. try that again " + percentage, Toast.LENGTH_SHORT).show();
+                drawView.clearCanvas();
             }
         });
     }

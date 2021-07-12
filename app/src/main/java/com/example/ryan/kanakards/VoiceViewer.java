@@ -41,30 +41,24 @@ public class VoiceViewer extends AppCompatActivity {
         flashCard.setText(current.getSymbol());
         flashCard.setTextSize(120);
 
-        flashCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFront) {
-                    flashCard.setText(current.getRoma());
-                    flashCard.setTextSize(60);
-                    isFront = false;
-                } else {
-                    flashCard.setText(current.getSymbol());
-                    flashCard.setTextSize(120);
-                    isFront = true;
-                }
+        flashCard.setOnClickListener(v -> {
+            if (isFront) {
+                flashCard.setText(current.getRoma());
+                flashCard.setTextSize(60);
+                isFront = false;
+            } else {
+                flashCard.setText(current.getSymbol());
+                flashCard.setTextSize(120);
+                isFront = true;
             }
         });
-        speakButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ja_JP");
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak");
+        speakButt.setOnClickListener(v -> {
+            Intent intent1 = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent1.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent1.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ja_JP");
+            intent1.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak");
 
-                startActivityForResult(intent, VOICE_REQUEST_CODE);
-            }
+            startActivityForResult(intent1, VOICE_REQUEST_CODE);
         });
     }
 

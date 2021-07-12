@@ -22,12 +22,7 @@ public class InspectCharacter extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_inspect_character);
 
-        speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                speech.setLanguage(Locale.JAPANESE);
-            }
-        });
+        speech = new TextToSpeech(getApplicationContext(), i -> speech.setLanguage(Locale.JAPANESE));
 
         Intent intent = getIntent();
         symbol = intent.getStringExtra("symbol");
@@ -44,13 +39,11 @@ public class InspectCharacter extends AppCompatActivity {
         symbolView.setText(symbol);
         romaView.setText(roma);
 
-        listenButt.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (symbol.equals("ん") || symbol.equals("ン"))
-                    speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
-                else
-                    speech.speak(symbol + "ー", TextToSpeech.QUEUE_FLUSH, null, null);
-            }
+        listenButt.setOnClickListener(view -> {
+            if (symbol.equals("ん") || symbol.equals("ン"))
+                speech.speak("んんん", TextToSpeech.QUEUE_FLUSH, null, null);
+            else
+                speech.speak(symbol + "ー", TextToSpeech.QUEUE_FLUSH, null, null);
         });
     }
 }
