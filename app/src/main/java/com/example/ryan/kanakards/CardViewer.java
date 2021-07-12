@@ -18,6 +18,21 @@ public class CardViewer extends AppCompatActivity {
     private NewCardMethods cardMethods;
     private TextToSpeech speech;
 
+    /*Todo:
+    *Return to a workable state
+	    -Get sound working again
+	    -Get voice working again
+
+    *Add checks for if sound and voice packages are installed
+
+    *Make notification usage not annoying
+
+    *Have UI adjust dynamically
+	    -make sure tracing works
+
+    *Clean the code
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
