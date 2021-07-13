@@ -25,10 +25,9 @@ public class CardViewer extends AppCompatActivity {
 
     *Add checks for if sound and voice packages are installed
 
-    *Make notification usage not annoying
+    *Reimplement notifications
 
-    *Have UI adjust dynamically
-	    -make sure tracing works
+    *Refine the grading system
 
     *Clean the code
      */
